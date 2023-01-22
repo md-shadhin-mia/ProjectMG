@@ -8,8 +8,7 @@ public class ProjectMgApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectMgApplication.class, args);
-        System.out.println("Beans in Application Context:");
-
+        System.out.println("Application Running");
     }
 
 }
