@@ -1,6 +1,6 @@
 const ProjectDetails = function() {
       return (
-        <div className="flex-shrink max-w-full px-4 w-full my-6">
+        <div className="flex-shrink max-w-full w-full my-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-full">
             <div className="flex flex-row justify-between pb-4">
               <div className="flex flex-col">

@@ -40,16 +40,8 @@ const projectsJson = `{
 const Dashboard = () => {
   const [tab, setTab] = useState(1); // 1 = all, 2 = completed, 3 = not completed
   const [projects, setProjects] = useState(JSON.parse(projectsJson).projects);
-  return (
-    // <div className="bg-gray-200 dark:bg-slate-700 p-4">
-    //     <p class="text-xl font-bold mt-3 mb-5">Projects</p>
-        
 
-    //   {/* <div className="flex justify-between">
-    //     <TabControl handleTabChange={setTab} tab={tab} />
-    //   </div>
-    //   <ProjectList projects={projects} tab={tab} /> */}
-    // </div>
+  return (
     <div>
       <ProjectAddAndSearch />
 

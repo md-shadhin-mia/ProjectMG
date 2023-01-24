@@ -26,7 +26,7 @@ const ProjectList = ({ projects, tab }) => {
 
   return (
     
-    <div className="flex-shrink max-w-full px-4 w-full lg:w-1/2 mb-6">
+    <div className="flex-shrink max-w-full pl-2 w-full lg:w-1/2 mb-6">
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg h-full p-6">
       <div className="flex flex-row justify-between pb-6">
         <div className="flex flex-col">

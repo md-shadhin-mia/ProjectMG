@@ -1,16 +1,18 @@
 
 
 // sidebarReducer.js
+import {TOGGLE_SIDEBAR} from "../action/types";
+
 const initialState = {
-    isVisible: false
+    isVisible: document.body.offsetWidth >= 768
   };
   
   const sidebarReducer = (state = initialState, action) => {
     switch (action.type) {
-      case "TOGGLE_SIDEBAR":
+      case TOGGLE_SIDEBAR:
         return {
           ...state,
-          isVisible: !state.isVisible
+          isVisible: action.payload
         };
       default:
         return state;

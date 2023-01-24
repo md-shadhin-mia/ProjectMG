@@ -1,4 +1,23 @@
+import {useState} from 'react';
 function CreateProject() {
+
+    const [filds, setFilds] = useState({
+        title:"",
+        description:"",
+        budget:"",
+        total_task:"",
+        start_date:"",
+        end_date:""
+        });
+
+    const inputHandler= (event)=>{
+        setFilds({...filds, [event.target.name]:event.target.value});
+    }
+
+    const submitHandler = (event)=>{
+        event.preventDefault();
+        console.log(filds);
+    }
     return (
 
         <div className="p-2 text-start">
@@ -9,30 +28,30 @@ function CreateProject() {
             </div>                                                 
             <div className="flex-shrink max-w-full px-4 w-full mb-6">
               <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg h-full">
-                <form className="flex flex-wrap flex-row -mx-4">
+                <form onSubmit={submitHandler} className="flex flex-wrap flex-row -mx-4">
                   <div className="flex-shrink max-w-full px-4 w-full mb-4">
                     <label htmlFor="inputtitle" className="inline-block mb-2">Project title</label>
-                    <input type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputtitle" />
+                    <input value={filds.title} onInput={inputHandler} name="title" type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputtitle" />
                   </div>
                   <div className="flex-shrink max-w-full px-4 w-full mb-4">
                     <label htmlFor="inputdes" className="inline-block mb-2">Project description</label>
-                    <textarea type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputdes" defaultValue={""} /> 
+                    <textarea type="text"  value={filds.description} onInput={inputHandler} name="description" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputdes" />
                   </div>
                   <div className="flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                     <label htmlFor="inputbudget" className="inline-block mb-2">Project Budget</label>
-                    <input type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputbudget" />
+                    <input type="text"  value={filds.budget} onInput={inputHandler} name="budget" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputbudget" />
                   </div>
                   <div className="flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                     <label htmlFor="inputtask" className="inline-block mb-2">Total Task</label>
-                    <input type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputtask" />
+                    <input type="text"  value={filds.total_task} onInput={inputHandler} name="total_task" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="inputtask" />
                   </div>
                   
                   <div className="flex-shrink max-w-full px-4 w-full mb-4">
                     <label htmlFor="rangetime" className="inline-block mb-2">Start and End date</label>
                     <div id="rangetime" className="flex flex-col justify-center md:flex-row md:justify-between">
-                      <input id="startDate" className="startDate w-full leading-5 relative text-sm py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600 flatpickr-input" type="text" name="start" />
+                      <input id="startDate"   value={filds.start_date} onInput={inputHandler} name="start_date" className="startDate w-full leading-5 relative text-sm py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600 flatpickr-input" type="text" />
                       <span className="px-4 text-center">to</span>
-                      <input id="endDate" className="endDate w-full leading-5 relative text-sm py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" type="text" name="end" data-fp-omit />  
+                      <input id="endDate"  value={filds.end_date} onInput={inputHandler} name="end_date" className="endDate w-full leading-5 relative text-sm py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" type="text" />
                     </div>
                   </div>
                  

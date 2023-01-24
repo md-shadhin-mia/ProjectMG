@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {TOGGLE_SIDEBAR} from "./action/types";
 
 const HeroIcon = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const sidebar = useSelector((state)=>state.sidebar);
+  console.log(sidebar)
   return (
-    <div className="relative flex justify-end z-50">
+    <div className="relative flex justify-end">
       <button
         className="focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => dispatch({type:TOGGLE_SIDEBAR, payload:!sidebar.isVisible})}
       >
         <svg
           className={`w-6 h-6 transition duration-150 ease-in-out `}
@@ -20,14 +23,14 @@ const HeroIcon = () => {
             strokeLinejoin="round"
             strokeWidth={2}
             d="M4 6h16"
-            className={(isOpen?"scale-x-75 ":"")+"transition-all origin-right"}
+            className={(sidebar.isVisible?"scale-x-75 ":"")+"transition-all origin-right"}
           />
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
             d="M4 12h16"
-            className={(isOpen?"scale-x-50 ":"")+"transition-all origin-right"}
+            className={(sidebar.isVisible?"scale-x-50 ":"")+"transition-all origin-right"}
           />
           <path
             strokeLinecap="round"
