@@ -1,11 +1,7 @@
-// authReducer.js
-
 import { SET_TOKEN } from "../action/types";
 
-
-
 const initialState = {
-  token: null
+  token: "null1"
 };
 
 const authReducer = (state = initialState, action)=>{
@@ -19,6 +15,5 @@ const authReducer = (state = initialState, action)=>{
         return state;
     }
   }
-  
 
 export default authReducer;

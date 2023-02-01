@@ -1,8 +1,9 @@
 import React from 'react';
-import { FaBell, FaEnvelope, FaCalendar } from 'react-icons/fa';
+import {FaBell, FaEnvelope, FaCalendar, FaStar} from 'react-icons/fa';
 import { GoPerson } from 'react-icons/go'
 import AvatarAndMenu from "./UtilsComponent/avatarAndMenu";
 import HeroIcon from "./heroIcon";
+import IconWithDropdown from "./UtilsComponent/IconWithDropdown.jsx";
 
 const TopNavigation = () => {
   return (
@@ -14,7 +15,13 @@ const TopNavigation = () => {
         <div className="w-full flex-grow flex items-center w-auto  mt-0 bg-white bg-transparent text-black dark:text-white p-4 lg:p-0 z-20" id="nav-content">
           <ul className="list-reset flex justify-end flex-1 items-center">
             <li className="mr-3">
-              <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">Avatar</a>
+              <IconWithDropdown icon={<FaStar />}>
+                <li>it</li>
+                <li>is</li>
+                <li>woorking</li>
+                <li>perty</li>
+                <li>good</li>
+              </IconWithDropdown>
             </li>
             <li className="mr-3">
               <div className="relative inline-block">

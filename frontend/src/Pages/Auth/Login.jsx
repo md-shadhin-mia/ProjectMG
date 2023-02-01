@@ -1,10 +1,11 @@
 import {FaFacebook, FaGithub, FaSignInAlt} from "react-icons/all.js";
 import {useState} from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
 function Login() {
     const [fields, setFields] = useState({username:"", password:""});
-
+    const location = useLocation();
+    const message = location.state;
     const inputChangeHandling = (ev)=>{
         setFields({...fields, [ev.target.name]:ev.target.value});
     }
@@ -18,9 +19,12 @@ function Login() {
                 <div className="flex flex-wrap flex-row -mx-4 justify-center">
                     {/* login form */}
                     <div className="max-w-full w-full md:w-2/3 lg:w-1/2 px-6 sm:px-12">
+                        {message?<div className="relative bg-red-100 text-red-900 py-3 px-6 rounded mb-4">
+                            {message}
+                        </div>:""}
                         <div className="relative">
                             <div className="p-6 sm:py-8 sm:px-12 rounded-lg bg-white dark:bg-gray-800 shadow-xl">
-                                <form id="login-form">
+                                <form id="login-form" onSubmit={submitHandle}>
                                     <h1 className="text-2xl leading-normal mb-6 font-bold text-gray-800 dark:text-gray-300 text-center">Login</h1>
                                     <hr className="block w-12 h-0.5 mx-auto my-5 bg-gray-700 border-gray-700" />
                                     <div className="mb-6">
@@ -65,5 +69,4 @@ function Login() {
         </div>
     )
 }
-
 export default Login;

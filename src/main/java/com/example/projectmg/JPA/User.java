@@ -1,13 +1,13 @@
 package com.example.projectmg.JPA;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
-import javax.persistence.*;
 
 @Entity
 @Data
@@ -24,7 +24,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     @JsonIgnore
     private Profile profile;
 

@@ -1,10 +1,10 @@
 package com.example.projectmg.JPA;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class Goal {
     @ManyToOne
     @JsonIgnore
     private Project project;
-    @OneToMany(mappedBy = "goal",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "goal")
     @JsonIgnore
     private List<Task> tasks;
 
