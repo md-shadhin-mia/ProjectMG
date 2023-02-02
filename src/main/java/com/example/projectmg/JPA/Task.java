@@ -21,7 +21,7 @@ public class Task {
     @Column(name = "completed_at")
     private Timestamp completedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnore
     private Goal goal;
 

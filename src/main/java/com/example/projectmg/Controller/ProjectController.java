@@ -2,6 +2,7 @@ package com.example.projectmg.Controller;
 
 import com.example.projectmg.JPA.*;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,10 @@ public class ProjectController {
         if(!project.get().getOwner().getUsername().equals(authentication.getName())){
             throw new AccessDeniedException("User does not have permission to delete project");
         }
+        Project updateableProject = project.get();
+        if(!updateProject.getTitle().isEmpty()) updateableProject.setTitle(updateProject.getTitle());
+        if(!updateProject.getDescription().isEmpty()) updateableProject.setDescription(updateProject.getDescription());
+        if(updateProject.getDeadline() != null) updateableProject.setDeadline(updateProject.getDeadline());
         return ResponseEntity.ok(project.get());
     }
     @PostMapping
@@ -152,5 +157,4 @@ public class ProjectController {
         task.setCompletedAt(Timestamp.from(Instant.now()));
         return ResponseEntity.ok(taskRepository.save(task));
     }
-
 }

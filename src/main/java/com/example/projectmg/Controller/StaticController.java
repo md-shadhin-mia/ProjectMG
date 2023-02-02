@@ -16,10 +16,7 @@ import java.util.NoSuchElementException;
 @Order(Integer.MAX_VALUE)
 public class StaticController {
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok("hi! Shadhin");
-    }
+
    /* private final ResourceLoader resourceLoader;
 
     @Value("${spring.web.resources.static-locations:classpath:/static/}")
