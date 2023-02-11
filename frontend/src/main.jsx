@@ -12,10 +12,18 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
   document.documentElement.classList.add('dark')
 } else {
   document.documentElement.classList.remove('dark')
-} 
+}
 
 const store = createStore(rootReducer);
-const root = ReactDOM.createRoot(document.getElementById('root'));
+
+store.subscribe(()=>{
+    let theme = store.getState().theme.theme;
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+})
 
 window.addEventListener("resize", (ev)=>{
     if(window.innerWidth < 768)
@@ -23,6 +31,8 @@ window.addEventListener("resize", (ev)=>{
     else
         store.dispatch({type:TOGGLE_SIDEBAR, payload:true})
 })
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <Provider store={store}>

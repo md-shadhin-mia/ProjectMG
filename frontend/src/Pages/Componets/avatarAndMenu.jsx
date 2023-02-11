@@ -1,15 +1,28 @@
 import React from "react";
 
 import {useState} from 'react';
-import IconWithDropdown from "./IconWithDropdown.jsx";
+import IconWithDropdown from "../../UtilsComponent/IconWithDropdown.jsx";
+import {FaSignOutAlt} from "react-icons/all.js";
+import {useDispatch} from "react-redux";
+import setAuthToken from "../../action/setAuthToken.jsx";
+import {useNavigate} from "react-router-dom";
+import DarkModeToggle from "../../UtilsComponent/DarkModeToggle.jsx";
 
 const AvatarAndMenu=()=>{
-
+    const dispatch = useDispatch();
+    const navigate= useNavigate();
+    const logOut=()=>{
+        localStorage.clear("token");
+        sessionStorage.clear("token");
+        dispatch(setAuthToken(null));
+        navigate("/dashboard", {replace:true, state:"You just Sign out!"});
+    }
     return (
         <IconWithDropdown icon={
             <a className="px-3 flex text-sm rounded-full focus:outline-none cursor-pointer" id="user-menu-button" >
                 <div className="relative">
-                    <img className="h-10 w-10 rounded-full border border-gray-700 bg-gray-700" src="src/img/avatar/avatar.png" alt="avatar" />
+                    {/*<img className="h-10 w-10 rounded-full border border-gray-700 bg-gray-700" src="src/img/avatar/avatar.png" alt="avatar" />*/}
+                    <div className="w-10 h-10 bg-indigo-500 rounded-full overflow-hide">50</div>
                     <span title="online" className="flex justify-center absolute -bottom-0.5 ltr:right-1 rtl:left-1 text-center bg-green-500 border border-white w-3 h-3 rounded-full"></span>
                 </div>
                 <span className="hidden md:block ltr:ml-1 rtl:mr-1 self-center">Ali</span>
@@ -18,7 +31,8 @@ const AvatarAndMenu=()=>{
             <li className="relative">
                 <div className="flex flex-wrap flex-row -mx-4 px-3 py-4 items-center">
                     <div className="flex-shrink max-w-full px-4 w-1/3">
-                        <img src="src/img/avatar/avatar.png" className="h-10 w-10 rounded-full" alt="Ari Budin" />
+                        {/*<img src="src/img/avatar/avatar.png" className="h-10 w-10 rounded-full" alt="Ari Budin" />*/}
+                        <div className="w-10 h-10 bg-indigo-500 rounded-full overflow-hide">50</div>
                     </div>
                     <div className="flex-shrink max-w-full px-4 w-2/3 ltr:pl-1 rtl:pr-1">
                         <div className="font-bold"><a href="layout-preloader.html#" className=" text-gray-800 dark:text-gray-300 hover:text-indigo-500">Ari Budin</a></div>
@@ -60,13 +74,13 @@ const AvatarAndMenu=()=>{
                 <hr className="border-t border-gray-200 dark:border-gray-700 my-0"/>
             </li>
             <li className="relative">
-                <a className="block w-full py-2 px-6 clear-both whitespace-nowrap hover:text-indigo-500" href="layout-preloader.html#">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="inline ltr:mr-2 rtl:ml-2 w-4 h-4 bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                        <path fillRule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"></path>
-                        <path fillRule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
-                    </svg>
-                    text
-                </a>
+                <button onClick={logOut} className="block w-full py-2 px-6 clear-both whitespace-nowrap hover:text-indigo-500" href="layout-preloader.html#">
+                    <FaSignOutAlt className="inline ltr:mr-2 rtl:ml-2 w-4 h-4 bi bi-box-arrow-in-right" />
+                    Log Out
+                </button>
+            </li>
+            <li className="relative flex px-2 justify-end">
+                <DarkModeToggle />
             </li>
         </IconWithDropdown>
     )

@@ -2,7 +2,9 @@ package com.example.projectmg.Services;
 
 import com.example.projectmg.JPA.Profile;
 import com.example.projectmg.JPA.ProfileRepository;
+import com.example.projectmg.Utils;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -38,11 +40,7 @@ public class ProfileService {
 
     public Profile updateProfile(Long id, Profile profile) {
         Profile existingProfile = repository.findById(id).orElseThrow();
-        existingProfile.setMobileNumber(profile.getMobileNumber());
-        existingProfile.setEmail(profile.getEmail());
-        existingProfile.setProfession(profile.getProfession());
-        existingProfile.setLocation(profile.getLocation());
-        existingProfile.setDetails(profile.getDetails());
+        Utils.copyNonNullProperties(profile, existingProfile);
         return repository.save(existingProfile);
     }
 

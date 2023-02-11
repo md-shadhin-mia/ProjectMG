@@ -4,7 +4,8 @@ import ProjectList from './Componets/ListofProjects';
 import ProjectAddAndSearch from './Componets/projectAddAndSearch';
 import ProjectDetails from './Componets/projectDetails';
 import ProjectChart from './Componets/projectChart';
-import CreateProject from './Componets/createProject';
+import CreateProjectForm from './Componets/createProjectForm.jsx';
+import TasksAndGoal from "./TasksAndGoal.jsx";
 
 const projectsJson = `{
     "projects": [
@@ -49,8 +50,9 @@ const Dashboard = () => {
       <div className='flex flex-col md:flex-row'>
         <ProjectChart/>
         <ProjectList />
+
       </div>
-      <CreateProject />
+        <TasksAndGoal />
     </div>
   );
 };

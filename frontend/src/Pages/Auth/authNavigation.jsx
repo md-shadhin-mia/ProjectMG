@@ -1,7 +1,9 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 function AuthNavigation(props) {
+    const auth = useSelector(state => state.auth.token != null);
     return (
         <nav className="flex flex-row flex-nowrap items-center justify-between mt-0 py-4 px-6 border-b border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-800" id="desktop-menu">
             {/* logo */}
@@ -32,16 +34,26 @@ function AuthNavigation(props) {
             <ul className="flex ltr:ml-auto rtl:mr-auto mt-2">
                 {/* Customizer (Only for demo purpose) */}
                 {/* End Customizer (Only for demo purpose) */}
-                <li className="relative">
-                    <NavLink to="/login" className="py-3 px-4 flex hover:text-indigo-500 focus:outline-none">
-                        <div className="relative inline-block">Login</div>
-                    </NavLink>
-                </li>
-                <li className="relative">
-                    <NavLink to="register" className="py-3 px-4 flex hover:text-indigo-500 focus:outline-none">
-                        <div className="relative inline-block">Register</div>
-                    </NavLink>
-                </li>
+                {auth?
+                    <li className="relative">
+                        <NavLink to="/dashboard" className="py-3 px-4 flex hover:text-indigo-500 focus:outline-none">
+                            <div className="relative inline-block">Dashboard</div>
+                        </NavLink>
+                    </li>
+                    :<>
+                    <li className="relative">
+                        <NavLink to="/login" className="py-3 px-4 flex hover:text-indigo-500 focus:outline-none">
+                            <div className="relative inline-block">Login</div>
+                        </NavLink>
+                    </li>
+                    <li className="relative">
+                        <NavLink to="register" className="py-3 px-4 flex hover:text-indigo-500 focus:outline-none">
+                            <div className="relative inline-block">Register</div>
+                        </NavLink>
+                    </li>
+                </>}
+
+
             </ul>
         </nav>
     );

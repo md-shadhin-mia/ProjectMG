@@ -43,7 +43,8 @@ public class UserProfileController {
     }
 
     @GetMapping("/{id}/image")
-    public ResponseEntity<Resource> getProfileImage(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> getProfileImage(@PathVariable Long id)
+            throws IOException {
         Resource resource = service.getProfileImage(id);
         System.out.println(resource);
         if(resource != null){
@@ -55,7 +56,8 @@ public class UserProfileController {
         }
     }
     @PostMapping("/{id}/image")
-    public void uploadProfileImage(@PathVariable Long id, @RequestParam("image") MultipartFile image) throws IOException {
+    public void uploadProfileImage(@PathVariable Long id, @RequestParam("image") MultipartFile image)
+            throws IOException {
         service.uploadProfileImage(id, image);
     }
 }

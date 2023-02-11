@@ -23,9 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
-
     private JwtEncoder encoder;
-
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;
@@ -39,29 +37,27 @@ public class AuthController {
         user.setLastName(regUser.getLastName());
         user.setPassword(passwordEncoder.encode(regUser.getPassword()));
         Profile profile = new Profile();
+        profile.setEmail(regUser.getUsername());
+        profile.setUser(userRepository.save(user));
         profileService.createProfile(profile);
-        user.setProfile(profile);
-
-        userRepository.save(user);
-
         return ResponseEntity.ok("you are registered. you have to login now");
     }
-    @PostMapping("/login")
-    public String login(Authentication authentication) {
-        Instant now = Instant.now();
-        long expiry = 36000L;
-        String scope = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self")
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiry))
-                .subject(authentication.getName())
-                .claim("scope", scope)
-                .build();
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-    }
+//      @GetMapping("/login-success")
+//        public String login(Authentication authentication) {
+//        Instant now = Instant.now();
+//        long expiry = 36000L;
+//        String scope = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.joining(" "));
+//        JwtClaimsSet claims = JwtClaimsSet.builder()
+//                .issuer("self")
+//                .issuedAt(now)
+//                .expiresAt(now.plusSeconds(expiry))
+//                .subject(authentication.getName())
+//                .claim("scope", scope)
+//                .build();
+//        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+//    }
     @GetMapping("/do")
     public String dong(){
         return "Dong";

@@ -1,10 +1,12 @@
 import React from 'react';
 import AuthNavigation from "./authNavigation.jsx";
 import AuthFooter from "./authFooter.jsx";
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 function AuthLayout(props) {
-    return (
+    const auth = useSelector(state => state.auth.token != null);
+    return auth ? <Navigate to="/dashboard" replace /> : (
         <div>
             <AuthNavigation />
                 <Outlet />

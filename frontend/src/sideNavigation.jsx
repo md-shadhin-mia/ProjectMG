@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { FaBars, FaProjectDiagram, FaTasks, FaCalendarAlt, FaUsers } from "react-icons/fa";
-import {connect, useDispatch, useSelector} from "react-redux";
-import logo from "./logo.svg"
+import React from "react";
+import {  FaProjectDiagram, FaTasks, FaCalendarAlt, FaUsers } from "react-icons/fa";
+import { useDispatch, useSelector} from "react-redux";
+import logo from "./assets/logo.svg"
 import HeroIcon from "./heroIcon";
 import {TOGGLE_SIDEBAR} from "./action/types";
 const Sidebar = () => {

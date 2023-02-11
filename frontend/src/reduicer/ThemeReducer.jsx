@@ -1,12 +1,12 @@
-import { SET_TOKEN } from "../action/types";
+import {SET_THEME} from "../action/types";
 
 const initialState = {
-    theme: "dark"
+    theme: localStorage.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
 };
 
 const themeReducer = (state = initialState, action)=>{
     switch (action.type) {
-        case SET_TOKEN:
+        case SET_THEME:
             return {
                 theme: action.payload
             };
