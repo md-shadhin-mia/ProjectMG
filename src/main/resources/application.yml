@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MY_SQL_URL:jdbc:mysql://localhost:3306/projectmg}
-    username: ${MY_SQL_USERNAME:root}
-    password: ${MY_SQL_PASSWORD:}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/projectmg}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -17,4 +17,4 @@ jwt:
   public.key: classpath:app.pub
 
 app:
-  upload.path: C:\Users\Shadhin\Documents\uploads\
+  upload.path: /uploads/
