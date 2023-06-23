@@ -21,5 +21,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/example_db
       SPRING_DATASOURCE_USERNAME: example_user
       SPRING_DATASOURCE_PASSWORD: example_password
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    restart: always
+    ports:
+      - 8081:8978
+    volumes:
+      - /var/cloudbeaver/workspace:/opt/cloudbeaver/workspace
+    depends_on:
+      - mysql
+
 volumes:
   mysql_data:

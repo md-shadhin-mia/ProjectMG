@@ -18,7 +18,7 @@ public class homeController {
     public ResponseEntity getInfo(){
         Map<String, String> info = new HashMap<>();
         info.put("api_url", "/api");
-        info.put("api_doc", "/doc");
+        info.put("api_doc", "/swagger-ui.html");
         return ResponseEntity.ok(info);
     }
 }
