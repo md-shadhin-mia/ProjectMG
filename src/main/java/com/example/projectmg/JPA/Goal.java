@@ -15,14 +15,5 @@ public class Goal {
     @Id
     @GeneratedValue
     private Long id;
-    private String title;
-    private String description;
-    private LocalDate deadline;
-    @ManyToOne
-    @JsonIgnore
-    private Project project;
-    @OneToMany(mappedBy = "goal")
-    @JsonIgnore
-    private List<Task> tasks;
 
 }
