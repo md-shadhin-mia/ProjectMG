@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/projectmg
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  web:
+    resources:
+      static-locations: file:./client/build/
+server:
+  port: 8081
+
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
+
+app:
+  upload.path: C:\Users\Shadhin\Documents\uploads\

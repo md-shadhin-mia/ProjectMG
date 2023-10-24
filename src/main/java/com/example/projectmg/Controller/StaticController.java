@@ -1,0 +1,56 @@
+package com.example.projectmg.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.HandlerMapping;
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
+import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Value;
+
+@Controller
+@Order(Integer.MAX_VALUE)
+public class StaticController {
+    private final ResourceLoader resourceLoader;
+    @Value("${spring.web.resources.static-locations:classpath:/static/}")
+    private String[] staticResourcePaths;
+
+
+
+    public StaticController(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+    @GetMapping("/{filename:.+}")
+    @ResponseBody
+    public Resource getStaticResource(@PathVariable String filename) {
+        for (String path : staticResourcePaths) {
+            Resource resource = resourceLoader.getResource(path + filename);
+            if (resource.exists())
+                return resource;
+            else{
+                resource = resourceLoader.getResource(path + "index.html");
+                if(resource.exists())
+                    return resource;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+}
