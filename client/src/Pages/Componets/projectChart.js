@@ -83,7 +83,7 @@ const ProjectChart = () => {
 
 
     return (
-      <div className="flex-shrink max-w-full px-4 w-full lg:w-1/2 mb-6">
+      <div className="flex-shrink max-w-full pr-2 w-full lg:w-1/2 mb-6">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-full">
             <Line data={garaph.data} ref={chartRef} options={garaph.options}/>
         </div>

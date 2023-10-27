@@ -5,6 +5,7 @@ import Sidebar from './sideNavigation';
 import Dashboard from './Pages/Dashboard';
 
 import { CategoryScale, Chart, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
+import {useSelector} from "react-redux";
 
 Chart.register(
   CategoryScale,
@@ -26,17 +27,16 @@ function App() {
       }
     }
   );
-  
+  const {isVisible} = useSelector((state)=>state.sidebar)
   return (
     <div className="App min-h-screen font-sans text-base font-normal text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-40">
         <Sidebar />
-        <div className='md:pl-16 lg:pl-48'>
+        <div className={`any-transition ${isVisible? "md:pl-16 lg:pl-64":""}`}>
           <TopNavigation />
-          <div className="main container p-4">
+          <div className="main container p-4 mx-auto">
           <Dashboard />
           </div>
         </div>
-      
     </div>
   );
 }

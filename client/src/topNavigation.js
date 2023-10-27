@@ -1,30 +1,28 @@
 import React from 'react';
 import { FaBell, FaEnvelope, FaCalendar } from 'react-icons/fa';
 import { GoPerson } from 'react-icons/go'
+import AvatarAndMenu from "./UtilsComponent/avatarAndMenu";
+import HeroIcon from "./heroIcon";
 
 const TopNavigation = () => {
   return (
-    <header className="py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 mx-4 lg:mx-0  bg-white dark:bg-gray-800 shadow-sm">
+    <header className="py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 lg:mx-0  bg-white dark:bg-gray-800 shadow-sm">
       <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2 text-black dark:text-white">
         <div className="pl-4">
-          <a className="text-lg font-medium text-gray-900 dark:text-slate-300 " href="#">
-            <img src="logo.svg" alt="logo" className="h-8" />
-          </a>
+          <HeroIcon/>
         </div>
-        <div className="block lg:hidden pr-4">
-          <button id="nav-toggle" className="flex items-center p-1 text-orange-800 hover:text-gray-900 dark:text-slate-400">
-            <svg className="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-          </button>
-        </div>
-        <div className="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden  mt-2 lg:mt-0 bg-white lg:bg-transparent text-black dark:text-white p-4 lg:p-0 z-20" id="nav-content">
-          <ul className="list-reset lg:flex justify-end flex-1 items-center">
+        <div className="w-full flex-grow flex items-center w-auto  mt-0 bg-white bg-transparent text-black dark:text-white p-4 lg:p-0 z-20" id="nav-content">
+          <ul className="list-reset flex justify-end flex-1 items-center">
             <li className="mr-3">
               <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">Avatar</a>
             </li>
             <li className="mr-3">
-              <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">
+              <div className="relative inline-block">
                 <FaBell size={20} className="text-gray-600" />
-              </a>
+                <span
+                    className="flex justify-center absolute -top-2 -right-1 text-center bg-red-500 px-1 text-white rounded-full text-xs text-"><span
+                    className="align-self-center">3</span></span>
+              </div>
             </li>
             <li className="mr-3">
               <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">
@@ -36,6 +34,10 @@ const TopNavigation = () => {
                 <FaCalendar size={20} className="text-gray-600" />
               </a>
             </li>
+            <li className="mr-3">
+              <AvatarAndMenu />
+            </li>
+
           </ul>
         </div>
       </div>

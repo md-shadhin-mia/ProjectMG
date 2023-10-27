@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import {createStore} from "redux";
 
 import rootReducer from './reduicer/rootReducer';
+import {TOGGLE_SIDEBAR} from "./action/types";
 
 
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -16,14 +17,21 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 } 
 
 
+
 const store = createStore(rootReducer);
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+document.body.addEventListener("resize", (ev)=>{
+    if(document.body.offsetWidth < 768)
+        store.dispatch({type:TOGGLE_SIDEBAR, payload:false})
+    else
+        store.dispatch({type: TOGGLE_SIDEBAR, payload: true})
+});
 root.render(
   <React.StrictMode>
       <Provider store={store}>
             <App />
       </Provider>
-
   </React.StrictMode>
 );
 
