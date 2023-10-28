@@ -10,8 +10,6 @@ spring:
   web:
     resources:
       static-locations: file:./client/build/
-server:
-  port: 8081
 
 jwt:
   private.key: classpath:app.key
