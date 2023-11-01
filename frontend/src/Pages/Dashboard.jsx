@@ -44,18 +44,14 @@ const Dashboard = () => {
   return (
     <div>
       <ProjectAddAndSearch />
-
-      
       <ProjectDetails />
 
       <div className='flex flex-col md:flex-row'>
         <ProjectChart/>
         <ProjectList />
       </div>
-      
       <CreateProject />
     </div>
-    
   );
 };
 

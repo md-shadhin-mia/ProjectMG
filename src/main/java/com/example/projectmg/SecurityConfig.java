@@ -19,7 +19,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -48,7 +48,7 @@ public class SecurityConfig {
     RSAPublicKey publicKey;
     @Value("${jwt.private.key}")
     RSAPrivateKey privateKey;
-@Autowired
+    @Autowired
     UserRepository userRepository;
     @Bean
     public UserDetailsService userDetailsService(){
@@ -76,10 +76,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((authorize)->authorize
-                        .antMatchers("/api/auth/*").permitAll()
-                        .antMatchers("/*").permitAll()
-                        .antMatchers("/api/*")
-                        .authenticated()
+                        .requestMatchers("/api/auth/*").permitAll()
+                        .requestMatchers("/hello").permitAll()
+                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                 )
                 .csrf().disable()
                 .httpBasic(Customizer.withDefaults())

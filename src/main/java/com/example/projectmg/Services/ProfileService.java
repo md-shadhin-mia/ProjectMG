@@ -37,7 +37,7 @@ public class ProfileService {
     }
 
     public Profile updateProfile(Long id, Profile profile) {
-        Profile existingProfile = repository.getOne(id);
+        Profile existingProfile = repository.findById(id).orElseThrow();
         existingProfile.setMobileNumber(profile.getMobileNumber());
         existingProfile.setEmail(profile.getEmail());
         existingProfile.setProfession(profile.getProfession());
@@ -51,7 +51,7 @@ public class ProfileService {
     }
 
     public void uploadProfileImage(Long id, MultipartFile image) throws IOException {
-        Profile profile = repository.getOne(id);
+        Profile profile = repository.findById(id).orElseThrow();
         String fileName = id + "-" + image.getOriginalFilename();
         File file = new File(uploadPath + fileName);
         image.transferTo(file);
@@ -61,7 +61,7 @@ public class ProfileService {
     }
 
     public Resource getProfileImage(Long id) throws MalformedURLException {
-        Profile profile = repository.getOne(id);
+        Profile profile = repository.findById(id).orElseThrow();
         String fileName = profile.getProfileImage();
         File file = new File(uploadPath + fileName);
         if(file.exists()) {
