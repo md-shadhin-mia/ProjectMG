@@ -50,17 +50,21 @@ public class SecurityConfig {
     RSAPrivateKey privateKey;
     @Autowired
     UserRepository userRepository;
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return username -> {
-            System.out.println(username);
-            var user = userRepository.findByUsername(username)
-                    .orElseThrow(()->new UsernameNotFoundException("User not found"));
-            System.out.println(user);
-
-            return new CustomUserDetails(user);
-        };
-    }
+//    @Bean
+////    public UserDetailsService userDetailsService(){
+////        UserDetailsService userNotFound = new UserDetailsService() {
+////            @Override
+////            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+////                System.out.println(username);
+////                var user = userRepository.findByUsername(username)
+////                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+////                System.out.println(user);
+////
+////                return new CustomUserDetails(user);
+////            }
+////        };
+////        return userNotFound;
+////    }
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -76,8 +80,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((authorize)->authorize
-                        .requestMatchers("/api/auth/*").permitAll()
-                        .requestMatchers("/hello").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/*").permitAll()
                         .requestMatchers("/api/**").authenticated()
                 )

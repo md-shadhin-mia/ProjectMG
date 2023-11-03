@@ -4,6 +4,8 @@ import com.example.projectmg.JPA.Profile;
 import com.example.projectmg.JPA.RegisterUser;
 import com.example.projectmg.JPA.User;
 import com.example.projectmg.JPA.UserRepository;
+import com.example.projectmg.Services.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
+@AllArgsConstructor
 public class AuthController {
 
     private JwtEncoder encoder;
@@ -26,6 +29,7 @@ public class AuthController {
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;
+    private ProfileService profileService;
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterUser regUser){
         System.out.println(regUser);
@@ -35,18 +39,17 @@ public class AuthController {
         user.setLastName(regUser.getLastName());
         user.setPassword(passwordEncoder.encode(regUser.getPassword()));
         Profile profile = new Profile();
-        profile.setUser(user);
+        profileService.createProfile(profile);
         user.setProfile(profile);
+
         userRepository.save(user);
 
         return ResponseEntity.ok("you are registered. you have to login now");
     }
     @PostMapping("/login")
     public String login(Authentication authentication) {
-        System.out.println("hello "+authentication.getName());
         Instant now = Instant.now();
         long expiry = 36000L;
-        // @formatter:off
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -57,35 +60,10 @@ public class AuthController {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
-        // @formatter:on
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
     @GetMapping("/do")
     public String dong(){
         return "Dong";
-    }
-
-    public JwtEncoder getEncoder() {
-        return encoder;
-    }
-@Autowired
-    public void setEncoder(JwtEncoder encoder) {
-        this.encoder = encoder;
-    }
-
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-@Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public PasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
-@Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 }
