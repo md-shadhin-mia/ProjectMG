@@ -1,21 +1,41 @@
 import React, {useState} from 'react';
 import {FaFacebook, FaSignInAlt, FaTwitter} from "react-icons/all.js";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import setAuthToken from "../../action/setAuthToken.jsx";
+import Loading from "../../UtilsComponent/Loading.jsx";
 
 function Register() {
     const [fields, setFields] = useState(
-        { name:"",
+        {
+            firstName:"",
+            lastName:"",
         username:"",
         password:"",
         rePassword:"" });
+    const [isLoading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     function onChangeHandler(event) {
         setFields({...fields, [event.target.name]:event.target.value});
     }
 
-    function submitHandler(event) {
+    async function  submitHandler(event) {
         event.preventDefault();
-        console.log(fields);
+        try {
+            setLoading(true);
+            let response = await axios.post("/api/auth/register", fields);
+            console.log(response.data);
+            response = await axios.post("/api/auth/login", {username: fields.username, password: fields.password}, {
+                headers:{"Content-Type":"application/x-www-form-urlencoded"}
+            });
+            navigate("/profilesetup", {state: fields})
+        }catch (err){
+            console.error(err.error);
+        }finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -30,7 +50,10 @@ function Register() {
                                     <h1 className="text-2xl leading-normal mb-6 font-bold text-gray-800  dark:text-gray-300 text-center">Register</h1>
                                     <hr className="block w-12 h-0.5 mx-auto my-5 bg-gray-700 border-gray-700" />
                                     <div className="mb-6">
-                                        <input name="name" value={fields.name} onChange={onChangeHandler} className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" placeholder="Full Name" aria-label="full name" type="text" required />
+                                        <input name="firstName" value={fields.firstName} onChange={onChangeHandler} className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" placeholder="First Name" aria-label="full name" type="text" required />
+                                    </div>
+                                    <div className="mb-6">
+                                        <input name="lastName" value={fields.lastName} onChange={onChangeHandler} className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" placeholder="Last Name" aria-label="full name" type="text" required />
                                     </div>
                                     <div className="mb-6">
                                         <input name="username" value={fields.username} onChange={onChangeHandler} className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" placeholder="Email address" aria-label="email" type="email" required />
@@ -48,20 +71,27 @@ function Register() {
                                         </label>
                                     </div>
                                     <div className="grid">
-                                        <button type="submit" className="py-2 px-4 inline-block text-center rounded leading-normal text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0">
-                                            <FaSignInAlt className="ltr:mr-2 rtl:ml-2 inline-block"/>
-                                            Register
+                                        <button type="submit" className="py-2 px-4 inline-block text-center rounded leading-normal text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0" disabled={isLoading}>
+                                            {
+                                                isLoading?<>
+                                                    <Loading className="ltr:mr-2 rtl:ml-2 inline-block"/>
+                                                    Registering...
+                                                </>:<>
+                                                    <FaSignInAlt className="ltr:mr-2 rtl:ml-2 inline-block"/>
+                                                    Register
+                                                </>
+                                            }
                                         </button>
                                     </div>
                                 </form>
                                 <div className="mt-3">
                                     <p className="text-center mb-3"><span>Or</span></p>
                                     <div className="text-center mb-4 sm:space-x-4">
-                                        <a className="py-2 px-4 block sm:inline-block rounded leading-5 text-gray-100 bg-indigo-900 border border-indigo-900 hover:text-white hover:opacity-90 hover:ring-0 hover:border-indigo-900 focus:bg-indigo-900 focus:border-indigo-800 focus:outline-none focus:ring-0 mb-3" href="#">
+                                        <a className="py-2 px-4 block sm:inline-block rounded leading-5 text-gray-100 bg-indigo-900 border border-indigo-900 hover:text-white hover:opacity-90 hover:ring-0 hover:border-indigo-900 focus:bg-indigo-900 focus:border-indigo-800 focus:outline-none focus:ring-0 mb-3" href="#" disabled={isLoading}>
                                             <FaFacebook className="ltr:mr-2 rtl:ml-2 inline-block" />
                                             Join with Fb
                                         </a>
-                                        <a className="py-2 px-4 block sm:inline-block rounded leading-5 text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0 mb-3" href="#">
+                                        <a className="py-2 px-4 block sm:inline-block rounded leading-5 text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0 mb-3" href="#" disabled={isLoading}>
                                             <FaTwitter className="ltr:mr-2 rtl:ml-2 inline-block" />
                                             Join with Twitter
                                         </a>

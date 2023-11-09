@@ -4,4 +4,4 @@ function setAuthToken(token) {
     return {type:SET_TOKEN, payload:token}
 }
 
-export  default  setAuthToken();
+export  default  setAuthToken;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaBell, FaEnvelope, FaCalendar, FaStar} from 'react-icons/fa';
 import { GoPerson } from 'react-icons/go'
-import AvatarAndMenu from "./UtilsComponent/avatarAndMenu";
+import AvatarAndMenu from "./Pages/Componets/avatarAndMenu.jsx";
 import HeroIcon from "./heroIcon";
 import IconWithDropdown from "./UtilsComponent/IconWithDropdown.jsx";
 

@@ -23,26 +23,4 @@ public class User {
     private String firstName , lastName;
     @JsonIgnore
     private String password;
-
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Profile profile;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
-
-        if (!id.equals(user.id)) return false;
-        return username.equals(user.username);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + username.hashCode();
-        return result;
-    }
 }

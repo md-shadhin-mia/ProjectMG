@@ -1,7 +1,7 @@
 import { SET_TOKEN } from "../action/types";
 
 const initialState = {
-  token: "null1"
+  token: sessionStorage.getItem("token")||localStorage.getItem("token")
 };
 
 const authReducer = (state = initialState, action)=>{

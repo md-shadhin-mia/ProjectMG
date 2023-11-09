@@ -6,7 +6,7 @@ import Dashboard from './Pages/Dashboard';
 
 import { CategoryScale, Chart, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import {useDispatch, useSelector} from "react-redux";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import Layout from "./Layout.jsx";
 import LandingPage from "./Pages/LandingPage.jsx";
 import Login from "./Pages/Auth/Login.jsx";
@@ -15,6 +15,8 @@ import AuthLayout from "./Pages/Auth/authLayout.jsx";
 import AuthResetPassword from "./Pages/Auth/authResetPassword.jsx";
 import AuthProtection from "./AuthProtection.jsx";
 import setTheme from "./action/setTheme.jsx";
+import CreateProject from "./Pages/createProject.jsx";
+import AuthProfileSetup from "./Pages/Auth/authProfileSetup.jsx";
 
 Chart.register(
     CategoryScale,
@@ -28,44 +30,23 @@ Chart.register(
 
 
 function App() {
-
-    useEffect(
-        ()=>{
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        }
-    );
-    const {isVisible} = useSelector((state)=>state.sidebar);
-    const dispatchTheme = useDispatch()
-    const {theme} = useSelector(state => state.theme);
-    if (window.localStorage && window.matchMedia) {
-        const currentTheme = localStorage.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (currentTheme !== theme) {
-            dispatchTheme(setTheme(currentTheme))
-        }
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<LandingPage />} />
+                <Route index element={<LandingPage />} />
                 <Route element={<AuthProtection />}>
                     <Route element={<Layout />}>
-                        <Route path="/dashboard" element={<Dashboard />}/>
+                        <Route path="dashboard" >
+                            <Route index element={<Dashboard />} />
+                            <Route path="create" element={<CreateProject />} />
+                        </Route>
                     </Route>
-
                 </Route>
                 <Route element={<AuthLayout />}>
-                    <Route path="/login" element={<Login />}/>
-                    <Route path="/register" element={<Register />}/>
-                    <Route path="/resetpassword" element={<AuthResetPassword />}/>
+                    <Route path="login" element={<Login />}/>
+                    <Route path="register" element={<Register />}/>
+                    <Route path="resetpassword" element={<AuthResetPassword />}/>
+                    <Route path="profilesetup" element={<AuthProfileSetup />}/>
                 </Route>
             </Routes>
         </BrowserRouter>
