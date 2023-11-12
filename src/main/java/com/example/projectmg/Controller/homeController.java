@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class homeController {
     @GetMapping
     public ResponseEntity getInfo(){
-        Map info = new HashMap();
+        Map<String, String> info = new HashMap<>();
         info.put("api_url", "/api");
         info.put("api_doc", "/doc");
         return ResponseEntity.ok(info);
