@@ -1,17 +1,14 @@
-package com.example.projectmg;
+package com.example.projectmg.authentication;
 
-import com.example.projectmg.JPA.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public class UserDetailsImp implements UserDetails {
     private final User user;
+
     public UserDetailsImp(User user) {
         this.user = user;
     }
@@ -21,7 +18,7 @@ public class UserDetailsImp implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of();
     }
 
     /**
@@ -37,7 +34,7 @@ public class UserDetailsImp implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return null;
     }
 
     /**

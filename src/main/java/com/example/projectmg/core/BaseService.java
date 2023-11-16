@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-@Service
+
 public class BaseService<E extends BaseEntity, D> implements CRUDService<E, D> {
 
     private final BaseRepository<E> repository;

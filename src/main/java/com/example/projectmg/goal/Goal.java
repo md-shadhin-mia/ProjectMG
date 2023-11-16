@@ -1,9 +1,9 @@
 package com.example.projectmg.goal;
 
-import com.example.projectmg.JPA.Project;
-import com.example.projectmg.JPA.Task;
+
 import com.example.projectmg.core.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.projectmg.project.Project;
+import com.example.projectmg.task.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
