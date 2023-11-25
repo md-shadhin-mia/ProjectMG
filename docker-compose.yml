@@ -1,10 +1,11 @@
 version: '3'
 services:
   mysql:
-    image: mysql:8.0
+    image: docker.io/library/mysql:8.0
     restart: always
+    network_mode: host
     environment:
-      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: example_db
       MYSQL_USER: example_user
       MYSQL_PASSWORD: example_password
@@ -13,24 +14,15 @@ services:
 
   spring-app:
     build: .
-    ports:
-      - 8080:8080
+    restart: always
+    network_mode: host
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/example_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/example_db
       SPRING_DATASOURCE_USERNAME: example_user
       SPRING_DATASOURCE_PASSWORD: example_password
-
-  cloudbeaver:
-    image: dbeaver/cloudbeaver:latest
-    restart: always
-    ports:
-      - 8081:8978
-    volumes:
-      - /var/cloudbeaver/workspace:/opt/cloudbeaver/workspace
-    depends_on:
-      - mysql
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
 volumes:
   mysql_data:
