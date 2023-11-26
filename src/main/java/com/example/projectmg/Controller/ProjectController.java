@@ -1,8 +1,9 @@
 package com.example.projectmg.Controller;
 
 import com.example.projectmg.JPA.*;
+import com.example.projectmg.goal.Goal;
+import com.example.projectmg.goal.GoalRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -18,13 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/projects")
 @AllArgsConstructor
 public class ProjectController {
-
-
     private final ProjectRepository projectRepository;
     private final GoalRepository goalRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-
     @GetMapping
     public List<Project> showAuthProjects(Authentication authentication){
         return projectRepository.findAllByOwnerUsername(authentication.getName());
@@ -156,5 +154,4 @@ public class ProjectController {
         task.setCompleted(true);
         task.setCompletedAt(Timestamp.from(Instant.now()));
         return ResponseEntity.ok(taskRepository.save(task));
-    }
-}
+    }}
