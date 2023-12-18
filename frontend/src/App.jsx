@@ -3,6 +3,7 @@ import TopNavigation from './topNavigation';
 import React, { useEffect } from 'react';
 import Sidebar from './sideNavigation';
 import Dashboard from './Pages/Dashboard';
+import ProjectReport from './Pages/ProjectReport';
 
 import { CategoryScale, Chart, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import {useDispatch, useSelector} from "react-redux";
@@ -39,6 +40,7 @@ function App() {
                         <Route path="dashboard" >
                             <Route index element={<Dashboard />} />
                             <Route path="create" element={<CreateProject />} />
+                            <Route path="projects/:projectId/report" element={<ProjectReport />} />
                         </Route>
                     </Route>
                 </Route>
