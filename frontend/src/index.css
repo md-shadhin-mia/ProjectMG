@@ -2,36 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components{
-    /*Simple scrollbar*/
-    .scrollbars::-webkit-scrollbar {
-        width: 6px;
-    }
-    .scrollbars::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px transparent;
-        border-radius: 10px;
-    }
-    .scrollbars::-webkit-scrollbar-thumb {
-        background: transparent;
-        border-radius: 10px;
-    }
-    .scrollbars.show::-webkit-scrollbar-thumb, .scrollbars:hover::-webkit-scrollbar-thumb {
-        background: #777;
-    }
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+}
 
+@layer components{
     .any-transition{
         @apply transition-all duration-300 ease-in-out;
     }
 
-    .compact-sidebar{
-        @apply w-64 md:w-16 lg:w-64 md:hover:w-64;
-    }
-    .compact-sidebar .compact-item{
-        @apply md:sr-only lg:not-sr-only;
+    .sidebar-item {
+        @apply flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-400 rounded-xl hover:bg-gray-100 hover:text-gray-700 any-transition cursor-pointer;
     }
 
-    .compact-sidebar:hover .compact-item{
-        @apply md:not-sr-only lg:not-sr-only;
+    .card {
+        @apply bg-white rounded-2xl border border-gray-100 p-6;
+    }
+
+    .badge-soft-yellow {
+        @apply px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-50 text-yellow-600;
+    }
+
+    .badge-soft-red {
+        @apply px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-50 text-red-500;
+    }
+
+    .badge-soft-green {
+        @apply px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-50 text-green-600;
+    }
+
+    .badge-soft-indigo {
+        @apply px-2.5 py-0.5 text-xs font-medium rounded-full bg-indigo-50 text-indigo-600;
     }
 
     button[disabled], a[disabled]{
