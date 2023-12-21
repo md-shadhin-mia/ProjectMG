@@ -1,24 +1,21 @@
 import {Outlet} from "react-router-dom";
 import Sidebar from "./sideNavigation.jsx";
 import TopNavigation from "./topNavigation.jsx";
-import Dashboard from "./Pages/Dashboard.jsx";
 import {useSelector} from "react-redux";
 
 function Layout() {
     const isVisible = useSelector((state)=>state.sidebar.isVisible);
     return (
-        <div className="App min-h-screen overflow-hidden font-sans text-base font-normal text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-40">
+        <div className="min-h-screen bg-gray-50 text-gray-400 antialiased">
             <Sidebar />
-            <div className={`any-transition ${isVisible? "md:pl-16 lg:pl-64":""}`}>
+            <div className={`any-transition ${isVisible ? "md:pl-16 lg:pl-64" : ""}`}>
                 <TopNavigation />
-                <div className="main container p-4 mx-auto">
+                <main className="max-w-7xl mx-auto px-6 py-8">
                     <Outlet />
-                </div>
+                </main>
             </div>
         </div>
     )
-
 }
 
-
-export default  Layout;
+export default Layout;
