@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {FaPlus} from "react-icons/all.js";
+import { useNavigate } from 'react-router-dom';
 import fetcher from "../../fetcher";
 function CreateProjectForm() {
 
@@ -8,19 +9,23 @@ function CreateProjectForm() {
         description:"",
         deadline:""
         });
-
+    const navigate = useNavigate();
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState("");
 
     const inputHandler= (event)=>{
         setFilds({...filds, [event.target.name]:event.target.value});
-        fetcher.getUser()
-            .then(responce=>{
-                console.log(responce.data);
-        })
     }
 
     const submitHandler = (event)=>{
         event.preventDefault();
-        console.log(filds);
+        setSubmitting(true);
+        fetcher.createProject(filds)
+            .then(() => navigate("/dashboard"))
+            .catch(err => {
+                setError(err.response?.data?.error || "Failed to create project");
+                setSubmitting(false);
+            });
     }
     return (
         <div className="p-2 text-start">
@@ -42,12 +47,14 @@ function CreateProjectForm() {
                   </div>
                     <div className="flex-shrink max-w-full px-4 w-full mb-4">
                         <label htmlFor="deadline" className="inline-block mb-2">Project deadline</label>
-                        <input value={filds.deadline} onInput={inputHandler} name="deadline" type="text" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="deadline" required />
+                        <input value={filds.deadline} onInput={inputHandler} name="deadline" type="date" className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 dark:text-gray-300 dark:bg-gray-700 dark:border-gray-700 dark:focus:border-gray-600" id="deadline" />
                     </div>
 
+                  {error && <div className="flex-shrink max-w-full px-4 w-full mb-4 text-red-500 text-sm">{error}</div>}
+
                   <div className="flex-shrink max-w-full px-4 w-full">
-                    <button type="submit" className="py-2 px-4 block lg:inline-block text-center rounded leading-5 text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0">
-                        Add new project
+                    <button type="submit" disabled={submitting} className="py-2 px-4 block lg:inline-block text-center rounded leading-5 text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0">
+                        {submitting ? "Creating..." : "Add new project"}
                         <FaPlus className="inline-block ltr:ml-1 rtl:mr-1 bi bi-plus-lg"/>
                     </button>
                   </div>
