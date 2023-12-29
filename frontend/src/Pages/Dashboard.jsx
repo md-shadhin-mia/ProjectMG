@@ -1,58 +1,54 @@
-import React, { useState } from 'react';
-import TabControl from './Componets/tabControl';
+import React, { useState, useEffect } from 'react';
 import ProjectList from './Componets/ListofProjects';
 import ProjectAddAndSearch from './Componets/projectAddAndSearch';
 import ProjectDetails from './Componets/projectDetails';
 import ProjectChart from './Componets/projectChart';
-import CreateProjectForm from './Componets/createProjectForm.jsx';
 import TasksAndGoal from "./TasksAndGoal.jsx";
-
-const projectsJson = `{
-    "projects": [
-      {
-        "id": 1,
-        "name": "Project A",
-        "isCompleted": true
-      },
-      {
-        "id": 2,
-        "name": "Project B",
-        "isCompleted": false
-      },
-      {
-        "id": 3,
-        "name": "Project C",
-        "isCompleted": true
-      },
-      {
-        "id": 4,
-        "name": "Project D",
-        "isCompleted": false
-      },
-      {
-        "id": 5,
-        "name": "Project E",
-        "isCompleted": true
-      }
-    ]
-  }
-  `;
+import fetcher from '../fetcher';
 
 const Dashboard = () => {
-  const [tab, setTab] = useState(1); // 1 = all, 2 = completed, 3 = not completed
-  const [projects, setProjects] = useState(JSON.parse(projectsJson).projects);
+  const [summary, setSummary] = useState(null);
+
+  useEffect(() => {
+    fetcher.getReportSummary().then(res => setSummary(res.data)).catch(() => {});
+  }, []);
 
   return (
-    <div>
+    <div className="space-y-6">
+      {summary && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="card text-center">
+            <div className="text-3xl font-bold text-gray-900">{summary.totalProjects}</div>
+            <div className="text-xs text-gray-400 mt-1">Total Projects</div>
+          </div>
+          <div className="card text-center">
+            <div className="text-3xl font-bold text-gray-900">{summary.totalGoals}</div>
+            <div className="text-xs text-gray-400 mt-1">Total Goals</div>
+          </div>
+          <div className="card text-center">
+            <div className="text-3xl font-bold text-gray-900">{summary.totalTasks}</div>
+            <div className="text-xs text-gray-400 mt-1">Total Tasks</div>
+          </div>
+          <div className="card text-center">
+            <div className="text-3xl font-bold text-indigo-500">{summary.completionRate}%</div>
+            <div className="text-xs text-gray-400 mt-1">Completion Rate</div>
+          </div>
+        </div>
+      )}
+
       <ProjectAddAndSearch />
       <ProjectDetails />
 
-      <div className='flex flex-col md:flex-row'>
-        <ProjectChart/>
-        <ProjectList />
-
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-3">
+          <ProjectChart />
+        </div>
+        <div className="lg:col-span-2">
+          <ProjectList />
+        </div>
       </div>
-        <TasksAndGoal />
+
+      <TasksAndGoal />
     </div>
   );
 };
