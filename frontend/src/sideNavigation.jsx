@@ -1,66 +1,56 @@
 import React from "react";
-import {  FaProjectDiagram, FaTasks, FaCalendarAlt, FaUsers } from "react-icons/fa";
+import { FaProjectDiagram, FaTasks, FaChartBar, FaUsers } from "react-icons/fa";
 import { useDispatch, useSelector} from "react-redux";
-import logo from "./assets/logo.svg"
+import { Link } from "react-router-dom";
+import logo from "./assets/Logo.svg"
 import HeroIcon from "./heroIcon";
 import {TOGGLE_SIDEBAR} from "./action/types";
+
 const Sidebar = () => {
     const {isVisible} = useSelector((state)=>state.sidebar)
     const dipatchSidebar = useDispatch();
+
+    const navItems = [
+        { icon: FaProjectDiagram, label: "Projects", to: "/dashboard" },
+        { icon: FaChartBar, label: "Reports", to: "/dashboard/reports" },
+        { icon: FaTasks, label: "Tasks", to: "/dashboard/tasks" },
+        { icon: FaUsers, label: "Members", to: "/dashboard/members" },
+    ];
+
     return (
-        <aside 
-            className={`fixed ${!isVisible? "sr-only":""} any-transition h-screen bg-white dark:bg-gray-800 shadow-sm compact-sidebar z-50`}
+        <aside
+            className={`fixed inset-y-0 left-0 z-50 ${!isVisible ? "sr-only" : ""} any-transition w-64 bg-white border-r border-gray-100 flex flex-col`}
         >
-            <div onClick={()=>dipatchSidebar({type:TOGGLE_SIDEBAR, payload:false})} className="backdrop-blur absolute left-full top-0 bottom-0 bg-black opacity-75 md:hidden block" style={{right: "calc(-100vw + 100%)"}}>
+            <div onClick={() => dipatchSidebar({type: TOGGLE_SIDEBAR, payload: false})} className="backdrop-blur fixed inset-0 bg-black/20 md:hidden block z-[-1]">
             </div>
-            <nav className="px-2 md:px-2 lg:px-4 py-6 h-full overflow-y-auto scrollbars">
-                <div className="text-center mx-4 block md:hidden text-white">
+
+            <div className="flex items-center justify-between px-5 h-16 border-b border-gray-50">
+                <Link to="/" className="flex items-center gap-2.5">
+                    <img src={logo} alt="logo" className="h-8 w-8" />
+                    <span className="text-sm font-semibold text-gray-800">ProjectMG</span>
+                </Link>
+                <div className="md:hidden">
                     <HeroIcon />
                 </div>
-                <div className="mh-18 text-center py-5">
-                    <a href="/" className="relative flex flex-col justify-center">
-                        <img src={logo} alt="logo for site" className="max-h-20 m-2"/>
-                        <h2 className="text-2xl font-semibold text-gray-200 px-4 max-h-9 overflow-hidden compact-item any-transition">
-                            <span className="text-gray-700 dark:text-gray-200 ">Taildash</span>
-                        </h2>
-                    </a>
-                </div>
-                <a href="#" className="font-medium text-lg mb-2 flex items-center hover:bg-slate-700 p-2">
-                    <FaProjectDiagram size={20} className="align-middle mr-2" />
-                    <span className="compact-item any-transition">
-                    Projects
-                    </span>
-                </a>
-                <a href="#" className="font-medium text-lg mb-2 flex items-center hover:bg-slate-700 p-2">
-                    <FaTasks size={20} className="align-middle mr-2" />
-                    <span className="compact-item any-transition">
-                    Tasks
-                    </span>
-                </a>
-                <a href="#" className="font-medium text-lg mb-2 flex items-center hover:bg-slate-700 p-2">
-                    <FaCalendarAlt size={20} className="align-middle mr-2" />
-                    <span className="compact-item any-transition">
-                    Calendar
-                    </span>
-                </a>
-                <a href="#" className="font-medium text-lg mb-2 flex items-center hover:bg-slate-700 p-2">
-                    <FaUsers size={20} className="align-middle mr-2" />
-                    <span className="compact-item any-transition">
-                    Members
-                    </span>
-                </a>
-                {/*[1,2,3,4,5].map((v)=>(<a href="#" key={v} className="font-medium text-lg mb-2 flex items-center hover:bg-slate-700 p-2">
-                    <FaUsers size={20} className="align-middle mr-2"/>
-                    <span className="compact-item any-transition">
-                    Members
-                    </span>
-                </a>))*/}
-            </nav>
-        </aside>
+            </div>
 
+            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+                {navItems.map((item) => (
+                    <Link key={item.label} to={item.to} className="sidebar-item" onClick={() => { if(window.innerWidth < 768) dipatchSidebar({type: TOGGLE_SIDEBAR, payload: false}) }}>
+                        <item.icon size={18} />
+                        <span>{item.label}</span>
+                    </Link>
+                ))}
+            </nav>
+
+            <div className="px-3 py-4 border-t border-gray-50">
+                <div className="flex items-center gap-3 px-3 py-2 text-xs text-gray-400">
+                    <div className="w-2 h-2 rounded-full bg-green-400" />
+                    Online
+                </div>
+            </div>
+        </aside>
     );
 };
-
-
 
 export default Sidebar;
