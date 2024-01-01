@@ -1,51 +1,35 @@
 import React from 'react';
-import {FaBell, FaEnvelope, FaCalendar, FaStar} from 'react-icons/fa';
-import { GoPerson } from 'react-icons/go'
+import { FaBell, FaEnvelope, FaStar } from 'react-icons/fa';
 import AvatarAndMenu from "./Pages/Componets/avatarAndMenu.jsx";
 import HeroIcon from "./heroIcon";
-import IconWithDropdown from "./UtilsComponent/IconWithDropdown.jsx";
 
 const TopNavigation = () => {
   return (
-    <header className="py-4 border-b border-slate-900/10 lg:px-8 lg:border-0 dark:border-slate-300/10 lg:mx-0  bg-white dark:bg-gray-800 shadow-sm">
-      <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2 text-black dark:text-white">
-        <div className="pl-4">
-          <HeroIcon/>
-        </div>
-        <div className="w-full flex-grow flex items-center w-auto  mt-0 bg-white bg-transparent text-black dark:text-white p-4 lg:p-0 z-20" id="nav-content">
-          <ul className="list-reset flex justify-end flex-1 items-center">
-            <li className="mr-3">
-              <IconWithDropdown icon={<FaStar />}>
-                <li>it</li>
-                <li>is</li>
-                <li>woorking</li>
-                <li>perty</li>
-                <li>good</li>
-              </IconWithDropdown>
-            </li>
-            <li className="mr-3">
-              <div className="relative inline-block">
-                <FaBell size={20} className="text-gray-600" />
-                <span
-                    className="flex justify-center absolute -top-2 -right-1 text-center bg-red-500 px-1 text-white rounded-full text-xs text-"><span
-                    className="align-self-center">3</span></span>
-              </div>
-            </li>
-            <li className="mr-3">
-              <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">
-                <FaEnvelope size={20} className="text-gray-600" />
-              </a>
-            </li>
-            <li className="mr-3">
-              <a className="inline-block py-2 px-4 text-black dark:text-white font-medium" href="#">
-                <FaCalendar size={20} className="text-gray-600" />
-              </a>
-            </li>
-            <li className="mr-3">
-              <AvatarAndMenu />
-            </li>
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-4">
+            <HeroIcon />
+          </div>
 
-          </ul>
+          <div className="flex items-center gap-1">
+            <button className="p-2 rounded-xl hover:bg-gray-100 any-transition text-gray-300 hover:text-gray-500">
+              <FaStar size={18} />
+            </button>
+
+            <button className="p-2 rounded-xl hover:bg-gray-100 any-transition text-gray-300 hover:text-gray-500 relative">
+              <FaBell size={18} />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-400 rounded-full" />
+            </button>
+
+            <button className="p-2 rounded-xl hover:bg-gray-100 any-transition text-gray-300 hover:text-gray-500">
+              <FaEnvelope size={18} />
+            </button>
+
+            <div className="ml-2 pl-2 border-l border-gray-100">
+              <AvatarAndMenu />
+            </div>
+          </div>
         </div>
       </div>
     </header>
