@@ -1,5 +1,6 @@
 package com.example.projectmg.JPA;
 
+import com.example.projectmg.goal.Goal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
