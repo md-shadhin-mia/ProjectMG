@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"projects", "profile"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,12 @@ public class User {
     private String firstName , lastName;
     @JsonIgnore
     private String password;
+
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<Project> projects;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Profile profile;
 }
