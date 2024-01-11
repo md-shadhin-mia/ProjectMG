@@ -15,16 +15,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
@@ -41,21 +45,7 @@ public class SecurityConfig {
     UserRepository userRepository;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-/*    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetailsService userNotFound = new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                System.out.println(username);
-                var user = userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-                System.out.println(user);
 
-                return new CustomUserDetails(user);
-            }
-        };
-        return userNotFound;
-    }*/
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -67,46 +57,46 @@ public class SecurityConfig {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
-    public void customizeTokenResponse(FormLoginConfigurer<HttpSecurity> form) {
-        form
-        .usernameParameter("username")
-        .passwordParameter("password")
-        .loginProcessingUrl("/api/auth/login")
-        .successHandler((request, response, authentication) -> {
-            // generate the token
-            Instant now = Instant.now();
-            long expiry = 36000L;
-            String scope = authentication.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.joining(" "));
-            JwtClaimsSet claims = JwtClaimsSet.builder()
-                    .issuer("self")
-                    .issuedAt(now)
-                    .expiresAt(now.plusSeconds(expiry))
-                    .subject(authentication.getName())
-                    .claim("scope", scope)
-                    .build();
-            String token = SecurityConfig.this.jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
-            response.setContentType("application/json");
-            response.getWriter().write("{\"token\":\""+token+"\"}");
-        })
-
-        .failureHandler((request, response, exception) -> {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Login failed");
-        });
-    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests((authorize)->authorize
+            .authorizeHttpRequests((authorize)->authorize
                     .requestMatchers("/api/auth/register").permitAll()
-                    .requestMatchers("/*").permitAll()
-                    .requestMatchers("/api/**").authenticated()
+                    .requestMatchers("/api/auth/login").permitAll()
+                    .requestMatchers("/api", "/api/auth/do").permitAll()
+                    .requestMatchers("/", "/*.html", "/*.js", "/*.css", "/*.svg", "/*.png", "/*.ico", "/*.json").permitAll()
+                    .requestMatchers("/assets/**", "/favicon.ico", "/Logo.svg").permitAll()
+                    .requestMatchers("/index.html", "/manifest.webmanifest").permitAll()
+                    .anyRequest().authenticated()
             )
-            .csrf().disable()
-            .formLogin(this::customizeTokenResponse)
-            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-            .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .csrf(csrf->csrf.disable())
+            .formLogin(form->form
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .loginProcessingUrl("/api/auth/login")
+                .successHandler((request, response, authentication) -> {
+                    Instant now = Instant.now();
+                    long expiry = 36000L;
+                    String scope = authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.joining(" "));
+                    JwtClaimsSet claims = JwtClaimsSet.builder()
+                            .issuer("self")
+                            .issuedAt(now)
+                            .expiresAt(now.plusSeconds(expiry))
+                            .subject(authentication.getName())
+                            .claim("scope", scope)
+                            .build();
+                    String token = jwtEncoder().encode(JwtEncoderParameters.from(claims)).getTokenValue();
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"token\":\""+token+"\"}");
+                })
+                .failureHandler((request, response, exception) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Login failed");
+                })
+            )
+            .oauth2ResourceServer(server->server.jwt(Customizer.withDefaults()))
+            .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(
                 (exception)->exception
                     .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
