@@ -2,10 +2,7 @@ package com.example.projectmg.Services;
 
 import com.example.projectmg.JPA.Profile;
 import com.example.projectmg.JPA.ProfileRepository;
-import com.example.projectmg.Utils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -13,59 +10,69 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
-
+@RequiredArgsConstructor
 public class ProfileService {
-    @Autowired
-    private ProfileRepository repository;
 
+    private final ProfileRepository profileRepository;
+    
     @Value("${app.upload.path}")
     private String uploadPath;
-
+    
     public Optional<Profile> authProfile(Authentication authentication) {
-        return repository.findByUserUsername(authentication.getName());
+        return profileRepository.findByUserUsername(authentication.getName());
     }
+    
     public Optional<Profile> getProfile(Long id) {
-        return repository.findById(id);
+        return profileRepository.findById(id);
     }
-
+    
     public Profile createProfile(Profile profile) {
-        return repository.save(profile);
+        return profileRepository.save(profile);
     }
-
+    
     public Profile updateProfile(Long id, Profile profile) {
-        Profile existingProfile = repository.findById(id).orElseThrow();
-        Utils.copyNonNullProperties(profile, existingProfile);
-        return repository.save(existingProfile);
+        return profileRepository.findById(id).map(existing -> {
+            if (profile.getMobileNumber() != null) existing.setMobileNumber(profile.getMobileNumber());
+            if (profile.getEmail() != null) existing.setEmail(profile.getEmail());
+            if (profile.getProfession() != null) existing.setProfession(profile.getProfession());
+            if (profile.getLocation() != null) existing.setLocation(profile.getLocation());
+            if (profile.getDetails() != null) existing.setDetails(profile.getDetails());
+            if (profile.getDescription() != null) existing.setDescription(profile.getDescription());
+            return profileRepository.save(existing);
+        }).orElseThrow(() -> new java.util.NoSuchElementException("Profile not found"));
     }
-
-    public void deleteProfile(Long id) {
-        repository.deleteById(id);
+    
+    public Resource getProfileImage(Long id) throws IOException {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new java.util.NoSuchElementException("Profile not found"));
+        if (profile.getProfileImage() == null) return null;
+        
+        Path path = Paths.get(uploadPath).resolve(profile.getProfileImage());
+        return new UrlResource(path.toUri());
     }
-
-    public void uploadProfileImage(Long id, MultipartFile image) throws IOException {
-        Profile profile = repository.findById(id).orElseThrow();
-        String fileName = id + "-" + image.getOriginalFilename();
-        File file = new File(uploadPath + fileName);
-        image.transferTo(file);
-        System.out.println("uploaded");
-        profile.setProfileImage(fileName);
-        repository.save(profile);
-    }
-
-    public Resource getProfileImage(Long id) throws MalformedURLException {
-        Profile profile = repository.findById(id).orElseThrow();
-        String fileName = profile.getProfileImage();
-        File file = new File(uploadPath + fileName);
-        if(file.exists()) {
-            return new UrlResource(file.toURI());
-        } else {
-            return null;
+    
+    public void uploadProfileImage(Long id, MultipartFile file) throws IOException {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new java.util.NoSuchElementException("Profile not found"));
+        
+        if (!Files.exists(Paths.get(uploadPath))) {
+            Files.createDirectories(Paths.get(uploadPath));
         }
+        
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path targetLocation = Paths.get(uploadPath).resolve(fileName);
+        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        
+        profile.setProfileImage(fileName);
+        profileRepository.save(profile);
     }
 }
