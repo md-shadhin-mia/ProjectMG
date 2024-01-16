@@ -153,39 +153,31 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* Hero Image / Preview */}
-        <div className="max-w-5xl mx-auto mt-16 px-4">
-          <div className="bg-gray-900 rounded-2xl p-1 shadow-2xl shadow-gray-300">
-            <div className="bg-gray-800 rounded-xl overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-3 bg-gray-800">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <div className="flex-1 text-center text-gray-400 text-sm">ProjectMG Dashboard</div>
+        {/* Screenshots Gallery */}
+        <div className="max-w-6xl mx-auto mt-16 px-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="col-span-2 md:col-span-2 lg:col-span-2 row-span-2">
+              <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+                <img src="/screenshots/05-dashboard.png" alt="Dashboard" className="rounded-lg w-full" loading="lazy" />
               </div>
-              <div className="bg-white p-6 grid grid-cols-3 gap-4">
-                <div className="col-span-1 space-y-3">
-                  <div className="h-4 bg-indigo-100 rounded w-3/4"></div>
-                  <div className="h-3 bg-gray-100 rounded w-full"></div>
-                  <div className="h-3 bg-gray-100 rounded w-5/6"></div>
-                  <div className="h-3 bg-gray-100 rounded w-2/3"></div>
-                  <div className="mt-4 h-24 bg-indigo-50 rounded-lg"></div>
-                </div>
-                <div className="col-span-2 space-y-3">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="h-20 bg-green-50 rounded-lg border border-green-100"></div>
-                    <div className="h-20 bg-blue-50 rounded-lg border border-blue-100"></div>
-                    <div className="h-20 bg-amber-50 rounded-lg border border-amber-100"></div>
-                  </div>
-                  <div className="h-40 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center">
-                    <svg className="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/02-login.png" alt="Login" className="rounded-lg w-full" loading="lazy" />
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/03-register.png" alt="Register" className="rounded-lg w-full" loading="lazy" />
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/12-project-detail.png" alt="Project Detail" className="rounded-lg w-full" loading="lazy" />
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/13-goal-detail.png" alt="Goal Detail" className="rounded-lg w-full" loading="lazy" />
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/09-reports.png" alt="Reports" className="rounded-lg w-full" loading="lazy" />
+            </div>
+            <div className="bg-gray-900 rounded-xl p-1 shadow-xl">
+              <img src="/screenshots/08-profile.png" alt="Profile" className="rounded-lg w-full" loading="lazy" />
             </div>
           </div>
         </div>

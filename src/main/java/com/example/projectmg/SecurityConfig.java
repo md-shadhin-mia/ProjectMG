@@ -68,6 +68,7 @@ public class SecurityConfig {
                     .requestMatchers("/assets/**", "/favicon.ico", "/Logo.svg").permitAll()
                     .requestMatchers("/index.html", "/manifest.webmanifest").permitAll()
                     .requestMatchers("/login", "/register", "/resetpassword", "/profilesetup", "/dashboard/**").permitAll()
+                    .requestMatchers("/api/profiles/*/image").permitAll()
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
             )

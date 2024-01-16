@@ -1,5 +1,5 @@
 import React from "react";
-import { FaProjectDiagram, FaTasks, FaChartBar, FaUsers } from "react-icons/fa";
+import { FaProjectDiagram, FaTasks, FaChartBar, FaUser, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector} from "react-redux";
 import { Link } from "react-router-dom";
 import logo from "./assets/Logo.svg"
@@ -14,7 +14,8 @@ const Sidebar = () => {
         { icon: FaProjectDiagram, label: "Projects", to: "/dashboard" },
         { icon: FaChartBar, label: "Reports", to: "/dashboard/reports" },
         { icon: FaTasks, label: "Tasks", to: "/dashboard/tasks" },
-        { icon: FaUsers, label: "Members", to: "/dashboard/members" },
+        { icon: FaUser, label: "Profile", to: "/dashboard/profile" },
+        { icon: FaCog, label: "Admin", to: "/dashboard/admin" },
     ];
 
     return (

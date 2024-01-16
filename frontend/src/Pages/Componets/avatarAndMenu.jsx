@@ -1,14 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import IconWithDropdown from "../../UtilsComponent/IconWithDropdown.jsx";
-import {FaSignOutAlt} from "react-icons/all.js";
+import {FaSignOutAlt, FaUser} from "react-icons/all.js";
 import {useDispatch} from "react-redux";
 import setAuthToken from "../../action/setAuthToken.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import DarkModeToggle from "../../UtilsComponent/DarkModeToggle.jsx";
+import fetcher from "../../fetcher";
+
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 
 const AvatarAndMenu = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
+    const [imageError, setImageError] = useState(false);
+
+    useEffect(() => {
+        fetcher.getProfile()
+            .then(res => setProfile(res.data))
+            .catch(() => {});
+    }, []);
 
     const logOut = () => {
         localStorage.clear("token");
@@ -17,13 +28,29 @@ const AvatarAndMenu = () => {
         navigate("/dashboard", {replace: true, state: "You just Sign out!"});
     }
 
+    const initials = profile
+        ? (profile.email || "U").charAt(0).toUpperCase()
+        : "U";
+
+    const displayName = profile?.details || profile?.email || "User";
+    const displayRole = profile?.profession || "No profession set";
+
     return (
         <IconWithDropdown icon={
             <button className="flex items-center gap-2 text-sm rounded-full focus:outline-none" id="user-menu-button">
                 <div className="relative">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-xs font-semibold text-white shadow-sm ring-2 ring-gray-50">
-                        AB
-                    </div>
+                    {!imageError && profile?.id ? (
+                        <img
+                            src={`${API_BASE}/profiles/${profile.id}/image`}
+                            alt="avatar"
+                            className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-50"
+                            onError={() => setImageError(true)}
+                        />
+                    ) : (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-xs font-semibold text-white shadow-sm ring-2 ring-gray-50">
+                            {initials}
+                        </div>
+                    )}
                     <span className="absolute -bottom-0.5 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full" />
                 </div>
             </button>
@@ -31,15 +58,30 @@ const AvatarAndMenu = () => {
             <li>
                 <div className="px-4 py-3 border-b border-gray-50">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-xs font-semibold text-white shrink-0">
-                            AB
-                        </div>
+                        {!imageError && profile?.id ? (
+                            <img
+                                src={`${API_BASE}/profiles/${profile.id}/image`}
+                                alt="avatar"
+                                className="w-9 h-9 rounded-full object-cover ring-2 ring-gray-50 shrink-0"
+                                onError={() => setImageError(true)}
+                            />
+                        ) : (
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-xs font-semibold text-white shrink-0">
+                                {initials}
+                            </div>
+                        )}
                         <div className="min-w-0">
-                            <div className="text-sm font-medium text-gray-800 truncate">Ari Budin</div>
-                            <div className="text-xs text-gray-400 truncate">Professional Front end developer.</div>
+                            <div className="text-sm font-medium text-gray-800 truncate">{displayName}</div>
+                            <div className="text-xs text-gray-400 truncate">{displayRole}</div>
                         </div>
                     </div>
                 </div>
+            </li>
+            <li>
+                <Link to="/dashboard/profile" className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-500 hover:text-indigo-500 hover:bg-indigo-50 any-transition">
+                    <FaUser className="w-4 h-4" />
+                    Profile
+                </Link>
             </li>
             <li>
                 <a className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-500 hover:text-indigo-500 hover:bg-indigo-50 any-transition" href="#">

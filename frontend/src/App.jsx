@@ -4,6 +4,12 @@ import React, { useEffect } from 'react';
 import Sidebar from './sideNavigation';
 import Dashboard from './Pages/Dashboard';
 import ProjectReport from './Pages/ProjectReport';
+import ProjectDetail from './Pages/ProjectDetail';
+import GoalDetail from './Pages/GoalDetail';
+import Profile from './Pages/Profile';
+import AdminPanel from './Pages/AdminPanel';
+import Reports from './Pages/Reports';
+import Tasks from './Pages/Tasks';
 
 import { CategoryScale, Chart, LinearScale, LineElement, PointElement, Title, Tooltip } from 'chart.js';
 import {useDispatch, useSelector} from "react-redux";
@@ -40,7 +46,13 @@ function App() {
                         <Route path="dashboard" >
                             <Route index element={<Dashboard />} />
                             <Route path="create" element={<CreateProject />} />
+                            <Route path="projects/:projectId" element={<ProjectDetail />} />
+                            <Route path="projects/:projectId/goals/:goalId" element={<GoalDetail />} />
                             <Route path="projects/:projectId/report" element={<ProjectReport />} />
+                            <Route path="profile" element={<Profile />} />
+                            <Route path="admin" element={<AdminPanel />} />
+                            <Route path="reports" element={<Reports />} />
+                            <Route path="tasks" element={<Tasks />} />
                         </Route>
                     </Route>
                 </Route>

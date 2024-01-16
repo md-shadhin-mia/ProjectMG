@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8081/api";
 
 const apiClient = axios.create({
   baseURL: API_BASE,
@@ -100,6 +100,14 @@ const fetcher = {
 
   getProfile() {
     return apiClient.get("/profiles");
+  },
+
+  getProfileById(id) {
+    return apiClient.get(`/profiles/${id}`);
+  },
+
+  getAdminPanel() {
+    return apiClient.get("/admin-pannel");
   },
 
   updateProfile(id, data) {
